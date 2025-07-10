@@ -31,6 +31,12 @@ public class Board_Bar : MonoBehaviour
 
     public bool CheckDonut(GameObject donut)
     {
+        if (donut == null)
+        {
+            Debug.Log("도넛을 들고있지않습니다.");
+            return false;
+        }
+        
         if (barStack.Count > 0)
         {
             int pushNumber = donut.GetComponent<Donut>().donutNumber;
@@ -56,7 +62,8 @@ public class Board_Bar : MonoBehaviour
     {
         if (!CheckDonut(donut))
             return;
-        
+
+        Hanoi_Tower.moveCount++;
         Hanoi_Tower.isSelected = false;
         Hanoi_Tower.selectedDonut = null;
         
@@ -69,7 +76,14 @@ public class Board_Bar : MonoBehaviour
 
     public GameObject PopDonut()
     {
-        GameObject donut = barStack.Pop(); // Stack에서 Gameobject를 꺼내는 기능
-        return donut; // 꺼낸 도넛을 반환
+        if (barStack.Count > 0)
+        {
+            Hanoi_Tower.currentBar = this;
+            Hanoi_Tower.isSelected = true;
+            GameObject donut = barStack.Pop(); // Stack에서 Gameobject를 꺼내는 기능
+            return donut; // 꺼낸 도넛을 반환
+        }
+        
+        return null;
     }
 }
