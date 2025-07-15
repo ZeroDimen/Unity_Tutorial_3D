@@ -1,0 +1,39 @@
+using UnityEngine;
+
+// 선택 정렬의 예시 (가장 작은 값을 앞으로 보내는 정렬)
+public class SelectionSort : MonoBehaviour
+{
+    private int[] array = { 5, 2, 1, 8, 3, 7, 6, 4 };
+
+    private void Start()
+    {
+        Debug.Log($"정렬 전 : {string.Join(", ", array)}");
+        
+        Selection(array);
+        Debug.Log($"정렬 후 : {string.Join(", ", array)}");
+    }
+
+    private void Selection(int[] arr)
+    {
+        int n = arr.Length;
+
+        // 특정 값 선택
+        for (int i = 0; i < n -1 ; i++)  // i : 선택한 인덱스 값
+        {
+            int minIdx = i;
+            
+            // 뒤에 있는 값들과 비교 
+            for (int j = i + 1; j < n; j++) // j : 비교할 인덱스 값
+            {
+                if (arr[j] < arr[minIdx])
+                {
+                    minIdx = j;
+                }
+            }
+            
+            int temp = arr[i];
+            arr[i] = arr[minIdx];
+            arr[minIdx] = temp;
+        }
+    }
+}
