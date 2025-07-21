@@ -8,6 +8,12 @@ public class CamRotate : MonoBehaviour
     public float my;
     void Update()
     {
+        // 게임 상태가 'Run' 상태일 때만 조작할 수 있게함.
+        if (FPS_GameManager.instance.gState != FPS_GameManager.GameState.Run)
+        {
+            return;
+        }
+        
         // 마우스 입력
         float mouse_X = Input.GetAxis("Mouse X");
         float mouse_Y = Input.GetAxis("Mouse Y");

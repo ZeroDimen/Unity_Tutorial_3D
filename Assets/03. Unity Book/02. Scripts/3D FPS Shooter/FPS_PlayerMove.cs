@@ -1,5 +1,6 @@
-using System;
+using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class FPS_PlayerMove : MonoBehaviour
 {
@@ -11,6 +12,13 @@ public class FPS_PlayerMove : MonoBehaviour
     
     public float jumpPower = 10f;
     public bool isJumping = false;
+
+    public int hp = 20;
+
+    int maxHp = 20;
+    public Slider hpSlider;
+
+    public GameObject hitEffect;
     
     private void Start()
     {
@@ -20,6 +28,12 @@ public class FPS_PlayerMove : MonoBehaviour
 
     private void Update()
     {
+        // 게임 상태가 'Run' 상태일 때만 조작할 수 있게함.
+        if (FPS_GameManager.instance.gState != FPS_GameManager.GameState.Run)
+        {
+            return;
+        }
+        
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis("Vertical");
         
@@ -51,5 +65,27 @@ public class FPS_PlayerMove : MonoBehaviour
         dir.y = yVelocity;
         
         cc.Move(dir * (moveSpeed * Time.deltaTime));
+    }
+
+    public void DamageAction(int damage)
+    {
+        // 에너마의 공격력 만큼 플레이어의 체력을 깎는다.
+        hp -= damage;
+        
+        hpSlider.value = (float)hp / (float)maxHp;
+
+        if (hp > 0)
+        {
+            // 피격 이펙트 코루틴 시작
+            StartCoroutine(PlayHitEffect());
+        }
+    }
+
+    IEnumerator PlayHitEffect()
+    {
+        
+        hitEffect.SetActive(true);
+        yield return new WaitForSeconds(0.3f);
+        hitEffect.SetActive(false);
     }
 }
