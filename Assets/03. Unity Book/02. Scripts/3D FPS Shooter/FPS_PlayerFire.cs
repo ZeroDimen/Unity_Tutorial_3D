@@ -13,9 +13,12 @@ public class FPS_PlayerFire : MonoBehaviour
 
     public int weaponPower = 5;
     
+    private Animator anim;
+    
     private void Start()
     {
         ps = bulletEffect.GetComponent<ParticleSystem>();
+        anim = GetComponentInChildren<Animator>();
     }
 
     private void Update()
@@ -28,6 +31,10 @@ public class FPS_PlayerFire : MonoBehaviour
         
         if (Input.GetMouseButtonDown(0))
         {
+            if (anim.GetFloat("MoveMotion") == 0)
+            {
+                anim.SetTrigger("Attack");
+            }
             // 레이를 생성한 후 발사될 위치와 진행 방향을 설정
             Ray ray = new Ray(Camera.main.transform.position, Camera.main.transform.forward);
             // 레이가 부딪힌 대상의 정보를 저장할 변수를 생성

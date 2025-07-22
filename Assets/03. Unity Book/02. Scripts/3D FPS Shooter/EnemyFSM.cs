@@ -24,6 +24,7 @@ public class EnemyFSM : MonoBehaviour
     private float attackDelay = 2.0f; // 공격 딜레이 시간
 
     private Vector3 originPos; // 초기 위치 저장용 변수
+    private Quaternion originRot;
     public float moveDistance = 20f; // 이동 가능 범위
     
     private Transform player; // 플레이어 트랜스 폼
@@ -42,6 +43,7 @@ public class EnemyFSM : MonoBehaviour
         player = GameObject.Find("Player").transform;
         cc = GetComponent<CharacterController>();
         originPos = transform.position;
+        originRot = transform.rotation;
         anim = transform.GetComponentInChildren<Animator>();
     }
 
@@ -104,6 +106,9 @@ public class EnemyFSM : MonoBehaviour
         {
             m_State = EnermyState.Attack;
             Debug.Log("상태 전환: Move -> Attack");
+
+            currentTime = attackDelay;
+            anim.SetTrigger("MoveToAttackDelay");
         }
     }
     private void Attack()
@@ -113,9 +118,10 @@ public class EnemyFSM : MonoBehaviour
             currentTime += Time.deltaTime;
             if (currentTime > attackDelay)
             {
-                player.GetComponent<FPS_PlayerMove>().DamageAction(attackPower); // 디버깅에 불리함
+                // player.GetComponent<FPS_PlayerMove>().DamageAction(attackPower); // 디버깅에 불리함
                 currentTime = 0;
                 print("공격");
+                anim.SetTrigger("StartAttack");
             }
         }
         else
@@ -123,6 +129,8 @@ public class EnemyFSM : MonoBehaviour
             m_State = EnermyState.Move;
             currentTime = 0;
             Debug.Log("상태 전환: Attack -> Move");
+            anim.SetTrigger("AttackToMove");
+            
         }
     }
     private void Return()
@@ -139,6 +147,7 @@ public class EnemyFSM : MonoBehaviour
         else
         {
             transform.position = originPos;
+            transform.rotation = originRot;
             hp = hpMax; // 채력 초기화
             hpSlider.value = (float) hp / (float)hpMax;
             m_State = EnermyState.Idle;
@@ -160,7 +169,7 @@ public class EnemyFSM : MonoBehaviour
     IEnumerator DamageProcess()
     {
         // 피격 모션 시간 만큼 기다림
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1f);
         m_State = EnermyState.Move;
         Debug.Log("상태 전환: Damaged -> Move");
     }
@@ -179,12 +188,14 @@ public class EnemyFSM : MonoBehaviour
         {
             m_State = EnermyState.Damaged;
             Debug.Log("상태 전환: Ani state -> Damaged");
+            anim.SetTrigger("Damaged");
             Damaged();
         }
         else
         {
             m_State = EnermyState.Die;
             Debug.Log("상태 전환: Ani state -> Die");
+            anim.SetTrigger("Die");
             Die();
         }
         hpSlider.value = (float) hp / (float)hpMax;
@@ -199,5 +210,10 @@ public class EnemyFSM : MonoBehaviour
         yield return new WaitForSeconds(2f);
         Debug.Log("소멸");
         Destroy(gameObject);
+    }
+
+    public void AttackAction()
+    {
+        player.GetComponent<FPS_PlayerMove>().DamageAction(attackPower); // 디버깅에 불리함
     }
 }

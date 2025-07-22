@@ -19,11 +19,14 @@ public class FPS_PlayerMove : MonoBehaviour
     public Slider hpSlider;
 
     public GameObject hitEffect;
+
+    private Animator anim;
     
     private void Start()
     {
         Cursor.lockState = CursorLockMode.Locked; // 마우스 커서 안보이게하는 함수
         cc = GetComponent<CharacterController>();
+        anim = GetComponentInChildren<Animator>();
     }
 
     private void Update()
@@ -39,6 +42,7 @@ public class FPS_PlayerMove : MonoBehaviour
         
         Vector3 dir = new Vector3(h, 0, v);
         dir = dir.normalized;
+        anim.SetFloat("MoveMotion",dir.magnitude);
         
         // 메인 카메라 기준으로 방향을 변환
         dir = Camera.main.transform.TransformDirection(dir);
