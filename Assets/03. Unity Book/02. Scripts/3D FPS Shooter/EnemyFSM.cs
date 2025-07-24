@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.AI;
 
 public class EnemyFSM : MonoBehaviour
 {
@@ -36,6 +37,7 @@ public class EnemyFSM : MonoBehaviour
     public Slider hpSlider;
 
     private Animator anim;
+    private NavMeshAgent smith;
 
     private void Start()
     {
@@ -45,6 +47,7 @@ public class EnemyFSM : MonoBehaviour
         originPos = transform.position;
         originRot = transform.rotation;
         anim = transform.GetComponentInChildren<Animator>();
+        smith = transform.GetComponent<NavMeshAgent>();
     }
 
     private void Update()
@@ -95,12 +98,18 @@ public class EnemyFSM : MonoBehaviour
         // 플레이어와의 거리가 공격 범위 밖이라면 플레이어를 향해 이동
         else if (Vector3.Distance(transform.position,player.position) > attackDistance)
         {
-            Vector3 dir = (player.position - transform.position).normalized;
+            // Vector3 dir = (player.position - transform.position).normalized;
+            //
+            // cc.Move(dir * (moveSpeed * Time.deltaTime));
+            //
+            // // 방향을 복귀 지점으로 전환
+            // transform.forward = dir;
 
-            cc.Move(dir * (moveSpeed * Time.deltaTime));
+            smith.isStopped = true;
+            smith.ResetPath();
             
-            // 방향을 복귀 지점으로 전환
-            transform.forward = dir;
+            smith.stoppingDistance = attackDistance;
+            smith.SetDestination(player.position);
         }
         else
         {
@@ -138,11 +147,13 @@ public class EnemyFSM : MonoBehaviour
         // 초기 위치에서의 거리가 0.1f 이상이라면 초기 위치 쪽으로 이동한다.
         if (Vector3.Distance(transform.position, originPos) > 0.1f)
         {
-            Vector3 dir = (originPos - transform.position).normalized;
-            cc.Move(dir * (moveSpeed * Time.deltaTime));
-            
-            // 방향을 복귀 지점으로 전환
-            transform.forward = dir;
+            // Vector3 dir = (originPos - transform.position).normalized;
+            // cc.Move(dir * (moveSpeed * Time.deltaTime));
+            //
+            // // 방향을 복귀 지점으로 전환
+            // transform.forward = dir;
+            smith.SetDestination(originPos);
+            smith.stoppingDistance = 0f;
         }
         else
         {
@@ -184,6 +195,10 @@ public class EnemyFSM : MonoBehaviour
         }
         
         hp -= hitPower;
+        
+        smith.isStopped = true;
+        smith.ResetPath();
+        
         if (hp > 0)
         {
             m_State = EnermyState.Damaged;

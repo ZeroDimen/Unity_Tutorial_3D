@@ -429,7 +429,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   poolSize: 10
-  enemyObjectPool: []
   spawnPoints:
   - {fileID: 91470488}
   - {fileID: 700848586}
@@ -536,7 +535,6 @@ MonoBehaviour:
   bulletFactory: {fileID: 2406908607836086171, guid: 5fcaf01bacd47d1439376196150e1b07, type: 3}
   firePosition: {fileID: 1398657195}
   poolSize: 10
-  bulletObjectPool: []
 --- !u!1 &912033494
 GameObject:
   m_ObjectHideFlags: 0
@@ -1659,7 +1657,8 @@ MonoBehaviour:
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f05d5af6e5301b74daa2aa6dd4e0b20f, type: 2}
   m_sharedMaterial: {fileID: 6350443911905203281, guid: f05d5af6e5301b74daa2aa6dd4e0b20f, type: 2}
-  m_fontSharedMaterials: []
+  m_fontSharedMaterials:
+  - {fileID: 6350443911905203281, guid: f05d5af6e5301b74daa2aa6dd4e0b20f, type: 2}
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
@@ -1822,7 +1821,8 @@ MonoBehaviour:
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f05d5af6e5301b74daa2aa6dd4e0b20f, type: 2}
   m_sharedMaterial: {fileID: 6350443911905203281, guid: f05d5af6e5301b74daa2aa6dd4e0b20f, type: 2}
-  m_fontSharedMaterials: []
+  m_fontSharedMaterials:
+  - {fileID: 6350443911905203281, guid: f05d5af6e5301b74daa2aa6dd4e0b20f, type: 2}
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:

@@ -1,8 +1,13 @@
-using System;
+using System.Collections;
+using TMPro;
 using UnityEngine;
 
 public class FPS_PlayerFire : MonoBehaviour
 {
+    private enum WeaponMode {Normal, Sniper}
+
+    private WeaponMode wMode;
+    
     public GameObject firePosition;
     public GameObject bombFactory;
 
@@ -10,15 +15,22 @@ public class FPS_PlayerFire : MonoBehaviour
     
     public float throwPower = 15f;
     private ParticleSystem ps;
+    public TextMeshProUGUI wModeText;
 
     public int weaponPower = 5;
     
     private Animator anim;
     
+    private bool zoomMode = false;
+
+    public GameObject[] eff_Flash;
+    
     private void Start()
     {
         ps = bulletEffect.GetComponent<ParticleSystem>();
         anim = GetComponentInChildren<Animator>();
+
+        wMode = WeaponMode.Normal;
     }
 
     private void Update()
@@ -31,6 +43,7 @@ public class FPS_PlayerFire : MonoBehaviour
         
         if (Input.GetMouseButtonDown(0))
         {
+            StartCoroutine(ShootEffectOn(0.05f));
             if (anim.GetFloat("MoveMotion") == 0)
             {
                 anim.SetTrigger("Attack");
@@ -59,16 +72,67 @@ public class FPS_PlayerFire : MonoBehaviour
                     // 피격 이펙트를 플레이
                     ps.Play();
                 }
+                
             }
         }
         
         if (Input.GetMouseButtonDown(1))
         {
-            GameObject bomb = Instantiate(bombFactory);
-            bomb.transform.position = firePosition.transform.position;
 
-            Rigidbody rb = bomb.GetComponent<Rigidbody>();
-            rb.AddForce(Camera.main.transform.forward * throwPower, ForceMode.Impulse);
+            switch (wMode)
+            {
+                case WeaponMode.Normal: // 일반 모드일 때 마우스 오른쪽 -> 폭탄 투척
+                    
+                    GameObject bomb = Instantiate(bombFactory);
+                    bomb.transform.position = firePosition.transform.position;
+
+                    Rigidbody rb = bomb.GetComponent<Rigidbody>();
+                    rb.AddForce(Camera.main.transform.forward * throwPower, ForceMode.Impulse);
+                    
+                    
+                    break;
+                case WeaponMode.Sniper: // 저격 모드일 때 마우스 오른쪽 -> 확대 / 축소 조준경
+                    // if (!zoomMode)
+                    // {
+                    //     Camera.main.fieldOfView = 15f;
+                    //     zoomMode = true;
+                    // }
+                    // else
+                    // {
+                    //     Camera.main.fieldOfView = 60f;
+                    //     zoomMode = false;
+                    // }
+
+                    float fov = zoomMode ? 60f : 15f;
+                    Camera.main.fieldOfView = fov;
+                    zoomMode = !zoomMode;
+                    
+                    break;
+                default:
+                    break;
+            }
+            
         }
+        
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            wMode = WeaponMode.Normal;
+            Camera.main.fieldOfView = 60f;
+            wModeText.text = "Normal Mode";
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            wMode = WeaponMode.Sniper;
+            wModeText.text = "Sniper Mode";
+        }
+    }
+
+    IEnumerator ShootEffectOn(float duration) // 총구 이펙트 코루틴 함수
+    {
+        
+        int num = Random.Range(0, eff_Flash.Length -1);
+        eff_Flash[num].SetActive(true);
+        yield return new WaitForSeconds(duration);
+        eff_Flash[num].SetActive(false);
     }
 }
