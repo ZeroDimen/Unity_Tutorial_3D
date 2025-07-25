@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class FPS_GameManager : MonoBehaviour
@@ -23,10 +24,12 @@ public class FPS_GameManager : MonoBehaviour
     {
         Ready,
         Run,
+        Pause,
         GameOver
     }
     
     public GameState gState;
+    public GameObject gameOption;
 
     private void Start()
     {
@@ -49,6 +52,10 @@ public class FPS_GameManager : MonoBehaviour
             gameText.text = "Game Over";
             
             gameText.color = new Color32(255 , 0 , 0 ,255);
+
+            Transform buttons = gameText.transform.GetChild(0);
+            buttons.gameObject.SetActive(true);
+            
             gState = GameState.GameOver;
         }
     }
@@ -61,5 +68,31 @@ public class FPS_GameManager : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         gameLabel.SetActive(false);
         gState = GameState.Run;
+    }
+
+    public void OpenOptionWindow()
+    {
+        gameOption.SetActive(true);
+        Time.timeScale = 0;
+        gState = GameState.Pause;
+    }
+
+    public void CloseOptionWindow()
+    {
+        gameOption.SetActive(false);
+        Time.timeScale = 1;
+        gState = GameState.Run;
+    }
+
+    public void RestartGame()
+    {
+        Time.timeScale = 1;
+        // SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        SceneManager.LoadScene(1);
+    }
+
+    public void QuitGame()
+    {
+        Application.Quit();
     }
 }
