@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class FPS_PlayerFire : MonoBehaviour
 {
+    #region 맴버 변수
+
+    
+
     private enum WeaponMode {Normal, Sniper}
 
     private WeaponMode wMode;
@@ -33,7 +37,9 @@ public class FPS_PlayerFire : MonoBehaviour
 
     public GameObject crossHair01;
     public GameObject crossHair02;
+	public GameObject crossHairZoom;
     
+    #endregion
     private void Start()
     {
         ps = bulletEffect.GetComponent<ParticleSystem>();
@@ -49,7 +55,9 @@ public class FPS_PlayerFire : MonoBehaviour
         {
             return;
         }
-        
+
+        #region 마우스 왼쪽 클릭 -> 총 발사
+
         if (Input.GetMouseButtonDown(0))
         {
             StartCoroutine(ShootEffectOn(0.05f));
@@ -84,7 +92,9 @@ public class FPS_PlayerFire : MonoBehaviour
                 
             }
         }
-        
+
+        #endregion
+        # region 마우스 오른쪽 클릭 -> 수류탄(일반모드), 조준경(저격모드) 
         if (Input.GetMouseButtonDown(1))
         {
 
@@ -101,20 +111,27 @@ public class FPS_PlayerFire : MonoBehaviour
                     
                     break;
                 case WeaponMode.Sniper: // 저격 모드일 때 마우스 오른쪽 -> 확대 / 축소 조준경
+                    zoomMode = !zoomMode;
+
+                    float fov = zoomMode ? 15f : 60f;
+                    Camera.main.fieldOfView = fov;
+                    crossHairZoom.SetActive(zoomMode);
+                    crossHair02.SetActive(!zoomMode);
+                    
                     // if (!zoomMode)
                     // {
                     //     Camera.main.fieldOfView = 15f;
                     //     zoomMode = true;
+                    //     crossHairZoom.SetActive(true);
+                    //     crossHair02.SetActive(false);
                     // }
                     // else
                     // {
                     //     Camera.main.fieldOfView = 60f;
                     //     zoomMode = false;
+                    //     crossHairZoom.SetActive(false);
+                    //     crossHair02.SetActive(true);
                     // }
-
-                    float fov = zoomMode ? 60f : 15f;
-                    Camera.main.fieldOfView = fov;
-                    zoomMode = !zoomMode;
                     
                     break;
                 default:
@@ -122,7 +139,8 @@ public class FPS_PlayerFire : MonoBehaviour
             }
             
         }
-        
+        #endregion
+        #region 무기변경
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             wMode = WeaponMode.Normal;
@@ -148,6 +166,8 @@ public class FPS_PlayerFire : MonoBehaviour
             crossHair01.SetActive(false);
             crossHair02.SetActive(true);
         }
+        #endregion
+        
     }
 
     IEnumerator ShootEffectOn(float duration) // 총구 이펙트 코루틴 함수
