@@ -17,4 +17,9 @@ public class ExternalClass : MonoBehaviour
     //         // studyUnityEvent.onUnityEvent?.Invoke();
     //     }
     // }
+
+    private void Start()
+    {
+        StudySingleton.instance.number = 10;
+    }
 }
