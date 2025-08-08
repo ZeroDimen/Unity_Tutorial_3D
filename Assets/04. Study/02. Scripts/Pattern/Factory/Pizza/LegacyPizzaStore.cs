@@ -8,10 +8,12 @@ public class LegacyPizzaStore : PizzaStore
         {
             return new CheesePizza();
         }
-        else if (type.Equals("Special"))
+
+        if (type.Equals("Special"))
         {
             return new PotatoPizza();
         }
+
         return null;
     }
 }

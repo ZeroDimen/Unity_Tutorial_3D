@@ -5,18 +5,18 @@ public class CheesePizza : Pizza
         get => "CheesePizza";
     }
     
-    public string Sauce1
-    {
-        get
-        {
-            return "Tomato Sauce";
-        }
-    }
-    
-    public string Sauce2
+    public string Sauce
     {
         get => "Tomato Sauce";
     }
-    
-    public string Sauce3 => "Tomato Sauce";
+    // public string Sauce1
+    // {
+    //     get
+    //     {
+    //         return "Tomato Sauce";
+    //     }
+    // }
+    //
+    //
+    // public string Sauce2 => "Tomato Sauce";
 }
