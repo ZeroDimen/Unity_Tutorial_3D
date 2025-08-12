@@ -8,12 +8,15 @@ namespace Farm
     {
         private Animator anim;
 
-        private PlayerInput playerInput;
-
+        // private PlayerInput playerInput;
+        
         private CharacterController cc;
         private Vector3 moveInput;
+        private bool isRun;
 
-        private float moveSpeed = 2f;
+        private float currentSpeed;
+        private float walkSpeed = 2f;
+        private float runSpeed= 5f;
         private float turnSpeed = 10f;
 
         void Start()
@@ -24,9 +27,9 @@ namespace Farm
 
         void Update()
         {
-            cc.Move(moveInput * (moveSpeed * Time.deltaTime));
-
+            cc.Move(moveInput * currentSpeed * Time.deltaTime);
             Turn();
+            SetAnimation();
         }
         
         private void OnMove(InputValue value)
@@ -39,14 +42,30 @@ namespace Farm
         {
             if (moveInput != Vector3.zero)
             {
-                // 특정 방향을 바라보는 기능
                 Quaternion targetRot = Quaternion.LookRotation(moveInput);
-                
-                // Quaternion.Slerp( 현재 회전, 목표 회전, 속도)
                 transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, turnSpeed * Time.deltaTime);
             }
         }
 
+        private void OnRun(InputValue value)
+        {
+            isRun = value.isPressed;
+        }
+
+        private void SetAnimation()
+        {
+            float targetValue = 0f;
+            if (moveInput != Vector3.zero) // 이동 중일 경우
+            {
+                targetValue = isRun ? 1f : 0.5f;
+                currentSpeed = isRun ? runSpeed : walkSpeed;
+            }
+
+            float animValue = anim.GetFloat("Move");
+            animValue = Mathf.Lerp(animValue, targetValue, 10f * Time.deltaTime);
+            
+            anim.SetFloat("Move", animValue);
+        }
     }
 }
 
