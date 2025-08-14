@@ -20,12 +20,19 @@ namespace Farm
         private Vector3 velocity;
         private const float GRAVITY = -9.8f; // 가상 중력을 구현하기 위한 변수
 
-        void Start()
-        {
-            anim = GetComponent<Animator>();
-            cc = GetComponent<CharacterController>();
-        }
 
+        private void Awake()
+        {
+            int characterIndex = LoadSceneManager.Instance.characterIndex;
+            transform.GetChild(characterIndex).gameObject.SetActive(true);
+            anim = transform.GetChild(characterIndex).GetComponentInChildren<Animator>();
+
+            Debug.Log($"characterIndex : {characterIndex}");
+            cc = GetComponent<CharacterController>();
+
+            Debug.Log(cc);
+        }
+        
         void Update()
         {
             velocity.y += GRAVITY;

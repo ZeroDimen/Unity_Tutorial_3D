@@ -1,4 +1,5 @@
 using System.Collections;
+using Farm;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -72,7 +73,18 @@ public class SelectCharacter : MonoBehaviour
 
     private void Select()
     {
-        characterAnims[currentIndex].SetTrigger("Select");
         Debug.Log($"현재 선택한 캐릭터는 {currentIndex}번째 캐릭터입니다.");
+        LoadSceneManager.Instance.SetCharacterIndex(currentIndex);
+        
+        StartCoroutine(SelectRoutine());
+    }
+    
+    IEnumerator SelectRoutine()
+    {
+        characterAnims[currentIndex].SetTrigger("Select");
+
+        yield return new WaitForSeconds(3f);
+
+        LoadSceneManager.Instance.OnLoadScene();
     }
 }
