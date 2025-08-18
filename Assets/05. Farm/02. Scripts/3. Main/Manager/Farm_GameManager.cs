@@ -1,3 +1,4 @@
+using System;
 using Unity.Cinemachine;
 using UnityEngine;
 
@@ -15,6 +16,11 @@ namespace Farm
         public CameraState cameraState = CameraState.Outside;
 
         [SerializeField] private CinemachineClearShot clearShot;
+
+        private void Start()
+        {
+            AudioManager.Instance.BgmPlay("Bgm");
+        }
 
         public void SetCameraState(CameraState newState)
         {

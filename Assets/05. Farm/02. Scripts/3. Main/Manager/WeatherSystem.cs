@@ -22,23 +22,23 @@ namespace Farm
         {
             while (true)
             {
-                yield return new WaitForSeconds(15f);
 
                 int weatherCount = Enum.GetValues(typeof(WeatherType)).Length;
                 int ranIndex = Random.Range(0, weatherCount);
             
                 weatherType = (WeatherType)ranIndex;
                 
-                Debug.Log($"현제 날씨는 {weatherType} 입니다.");
-            
                 foreach (var particle in weatherParticles)
                     particle.SetActive(false);
             
                 weatherParticles[ranIndex].SetActive(true);
-            
-                // 날씨가 바뀜에 따라 식물 성장 달라지거나, ~
-            
+                
+                AudioManager.Instance.WeatherPlay($"{weatherType}");
+                Debug.Log($"현제 날씨는 {weatherType} 입니다."); // 날씨가 바뀜에 따라 식물 성장 속도?
+           
                 weatherAction?.Invoke(weatherType);
+
+                yield return new WaitForSeconds(15f);
             }
         }
     }

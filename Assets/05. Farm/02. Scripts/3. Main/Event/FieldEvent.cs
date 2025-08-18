@@ -9,8 +9,10 @@ namespace Farm
         {
             if (other.CompareTag("Player"))
             {
-                Farm_GameManager.Instance.SetCameraState(CameraState.Field);
                 Farm_GameManager.Instance.uiManager.ActivateFieldUI(true);
+                Farm_GameManager.Instance.uiManager.ActivateMiniMapUI(false);
+                
+                Farm_GameManager.Instance.SetCameraState(CameraState.Field);
             }
 
 
@@ -20,8 +22,10 @@ namespace Farm
         {
             if (other.CompareTag("Player"))
             {
-                Farm_GameManager.Instance.SetCameraState(CameraState.Outside);
                 Farm_GameManager.Instance.uiManager.ActivateFieldUI(false);
+                Farm_GameManager.Instance.uiManager.ActivateMiniMapUI(true);
+                
+                Farm_GameManager.Instance.SetCameraState(CameraState.Outside);
                 
             }
         }

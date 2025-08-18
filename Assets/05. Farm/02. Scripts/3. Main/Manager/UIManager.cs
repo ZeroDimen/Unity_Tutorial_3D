@@ -13,6 +13,7 @@ namespace Farm
         [SerializeField] private GameObject seedUI;
         [SerializeField] private GameObject inventoryUI;
         [SerializeField] private GameObject boardUI;
+        [SerializeField] private GameObject miniMapUI;
         
         [SerializeField] private Button seedButton;
         [SerializeField] private Button harvestButton;
@@ -58,6 +59,11 @@ namespace Farm
         public void ActivateBoardUI(bool isActive)
         {
             boardUI.SetActive(isActive);
+        }
+
+        public void ActivateMiniMapUI(bool isActive)
+        {
+            miniMapUI.SetActive(isActive);
         }
     }
 }

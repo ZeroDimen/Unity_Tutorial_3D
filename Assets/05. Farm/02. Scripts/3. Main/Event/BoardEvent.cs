@@ -9,6 +9,7 @@ namespace Farm
             if (other.CompareTag("Player"))
             {
                 Farm_GameManager.Instance.uiManager.ActivateBoardUI(true);
+                
                 Farm_GameManager.Instance.SetCameraState(CameraState.Board);
             }
         }
@@ -18,6 +19,7 @@ namespace Farm
             if (other.CompareTag("Player"))
             {
                 Farm_GameManager.Instance.uiManager.ActivateBoardUI(false);
+                
                 Farm_GameManager.Instance.SetCameraState(CameraState.House);
             }
         }

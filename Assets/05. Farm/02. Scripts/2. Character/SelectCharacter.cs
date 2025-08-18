@@ -18,8 +18,8 @@ public class SelectCharacter : MonoBehaviour
 
     void Start()
     {
-        turnButtons[0].onClick.AddListener(() => Turn(true));
-        turnButtons[1].onClick.AddListener(() => Turn(false));
+        turnButtons[0].onClick.AddListener(() => Turn(false));
+        turnButtons[1].onClick.AddListener(() => Turn(true));
 
         selectButton.onClick.AddListener(Select);
     }

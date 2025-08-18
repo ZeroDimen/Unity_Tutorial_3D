@@ -13,6 +13,8 @@ namespace Farm
             if (other.CompareTag("Player"))
             {
                 houseTop.SetActive(false);
+                Farm_GameManager.Instance.uiManager.ActivateMiniMapUI(false);
+                
                 Farm_GameManager.Instance.SetCameraState(CameraState.House);
             }
 
@@ -24,6 +26,8 @@ namespace Farm
             if (other.CompareTag("Player"))
             {
                 houseTop.SetActive(false);
+                Farm_GameManager.Instance.uiManager.ActivateMiniMapUI(true);
+                
                 Farm_GameManager.Instance.SetCameraState(CameraState.Outside);
             }
         }

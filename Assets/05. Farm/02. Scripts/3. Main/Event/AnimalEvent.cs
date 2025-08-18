@@ -2,7 +2,6 @@ using System;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-
 namespace Farm
 {
     public class AnimalEvent : MonoBehaviour
@@ -37,6 +36,8 @@ namespace Farm
                 isTimer = true;
                 SetRandomPosition();
                 
+                Farm_GameManager.Instance.uiManager.ActivateMiniMapUI(false);
+                
                 Farm_GameManager.Instance.SetCameraState(CameraState.Animal);
             }
         }
@@ -50,6 +51,9 @@ namespace Farm
                 timer = 0;
                 
                 flag.SetActive(false);
+                
+                Farm_GameManager.Instance.uiManager.ActivateMiniMapUI(true);
+                
                 Farm_GameManager.Instance.SetCameraState(CameraState.Outside);
             }
         }
