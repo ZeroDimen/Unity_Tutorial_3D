@@ -12,7 +12,7 @@ namespace Farm
         {
             if (instance == null)
             {
-                instance = this as LoadSceneManager;
+                instance = this;
                 DontDestroyOnLoad(gameObject);
             }
             else
@@ -25,7 +25,7 @@ namespace Farm
         public void OnLoadScene()
         {
             sceneIndex++;
-            Fade.onFadeAction(2f, Color.white, true, () => SceneManager.LoadScene(sceneIndex));
+            Fade.onFadeAction(1f, Color.white, true, () => SceneManager.LoadScene(sceneIndex));
         }
 
         public void SetCharacterIndex(int index)

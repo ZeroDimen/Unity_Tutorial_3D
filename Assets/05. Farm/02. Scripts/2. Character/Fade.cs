@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Fade : MonoBehaviour
+public class Fade : Singleton<Fade>
 {
     private Image fadeImage;
 
@@ -11,6 +11,7 @@ public class Fade : MonoBehaviour
 
     void Awake()
     {
+        instance = this;
         fadeImage = GetComponent<Image>();
     }
 
@@ -27,6 +28,13 @@ public class Fade : MonoBehaviour
     private void OnFade(float t, Color c, bool isFade, Action fadeEvent = null)
     {
         StartCoroutine(FadeRoutine(t, c, isFade, fadeEvent));
+        StartCoroutine(OnInit(t+0.5f));
+    }
+
+    IEnumerator OnInit(float time)
+    {
+        yield return new WaitForSeconds(time);
+        fadeImage.color = new Color(fadeImage.color.r, fadeImage.color.g, fadeImage.color.b, 0f);
     }
 
     IEnumerator FadeRoutine(float fadeTime, Color color, bool isFade, Action fadeEvent = null)

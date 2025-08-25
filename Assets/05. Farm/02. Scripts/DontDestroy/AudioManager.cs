@@ -6,27 +6,20 @@ namespace Farm
 {
     public class AudioManager : Singleton<AudioManager>
     {
-        [SerializeField] AudioSource bgmAudioSource;
-        [SerializeField] AudioSource weatherAudioSource;
-        [SerializeField] AudioSource sfxAudioSource;
-        
         [SerializeField] AudioClip[] bgm_Clips;
+        [SerializeField] AudioClip[] weatherClips;
         [SerializeField] AudioClip[] sfx_Clips;
         
-        [SerializeField] private Button[] bgm_Button;
-        [SerializeField] private Button[] sfx_Button;
-        
-        [SerializeField] private Slider bgm_Slider;
-        [SerializeField] private Slider sfx_Slider;
-        
-        [SerializeField] private GameObject bgm_FillArea;
-        [SerializeField] private GameObject sfx_FillArea;
+        [SerializeField] private AudioSource[] audioSources;
+        [SerializeField] private Slider[] sliders;
+        [SerializeField] private GameObject[] fillAreas;
+        [SerializeField] private Button[] buttons;
         
         protected override void Awake()
         {
             if (instance == null)
             {
-                instance = this as AudioManager;
+                instance = this;
                 DontDestroyOnLoad(gameObject);
             }
             else
@@ -37,47 +30,63 @@ namespace Farm
 
         private void Start()
         {
-            bgm_Slider.onValueChanged.AddListener(OnBGMVolumeChanged);
-            sfx_Slider.onValueChanged.AddListener(OnSFXVolumeChanged);
-
-            for (int i = 0; i < bgm_Button.Length; i++)
-            {
-                bgm_Button[i].onClick.AddListener(OnBGMMute);
-                sfx_Button[i].onClick.AddListener(OnSFXMute);
-            }
+            sliders[0].onValueChanged.AddListener(OnBGMVolumeChanged);
+            sliders[1].onValueChanged.AddListener(OnWeatherVolumeChanged);
+            sliders[2].onValueChanged.AddListener(OnSFXVolumeChanged);
             
-            bgm_Slider.onValueChanged.AddListener((temp) => SfxPlay("Interact"));
-            sfx_Slider.onValueChanged.AddListener((temp) => SfxPlay("Interact"));
+            buttons[0].onClick.AddListener(OnBGMMute);
+            buttons[1].onClick.AddListener(OnWeatherMute);
+            buttons[2].onClick.AddListener(OnSFXMute);
+            
+            
+            for (int i = 0; i < sliders.Length; i++)
+            {
+                sliders[i].onValueChanged.AddListener((temp) => SfxPlay("Interact"));
+            }
         }
 
         private void OnBGMMute()
         {
-            bgmAudioSource.mute = !bgmAudioSource.mute;
+            audioSources[0].mute = !audioSources[0].mute;
+            BgmMute(audioSources[0].mute, 0);
         }
     
+        private void OnWeatherMute()
+        {
+            audioSources[1].mute = !audioSources[1].mute;
+            BgmMute(audioSources[1].mute, 1);
+        }
+        
         private void OnSFXMute()
         {
-            sfxAudioSource.mute = !sfxAudioSource.mute;
+            audioSources[2].mute = !audioSources[2].mute;
+            BgmMute(audioSources[2].mute, 2);
         }
+        
         
         private void OnBGMVolumeChanged(float volume)
         {
-            bgmAudioSource.volume = volume / bgm_Slider.maxValue;
+            audioSources[0].volume = volume / sliders[0].maxValue;
+        }
+        
+        private void OnWeatherVolumeChanged(float volume)
+        {
+            audioSources[1].volume = volume / sliders[1].maxValue;
         }
     
         private void OnSFXVolumeChanged(float volume)
         {
-            sfxAudioSource.volume = volume / sfx_Slider.maxValue;
+            audioSources[2].volume = volume / sliders[2].maxValue;
         }
         
         public void BgmPlay(string clipName)
         {
-            StartCoroutine(FadeBgmPlay(clipName, bgmAudioSource));
+            StartCoroutine(FadeBgmPlay(clipName, audioSources[0]));
         }
         
         public void WeatherPlay(string clipName)
         {
-            StartCoroutine(FadeBgmPlay(clipName, weatherAudioSource));
+            StartCoroutine(FadeBgmPlay(clipName, audioSources[1]));
         }
         
         
@@ -87,7 +96,7 @@ namespace Farm
             {
                 if (clip.name == clipName)
                 {
-                    sfxAudioSource.PlayOneShot(clip);
+                    audioSources[2].PlayOneShot(clip);
                     return;
                 }
             }
@@ -95,49 +104,29 @@ namespace Farm
             Debug.Log($"{clipName} not found");
         }
         
-        public void BgmMute(bool isMute) // 개선 가능할지도
+        
+        public void BgmMute(bool isMute , int i) // 개선 가능할지도
         {
             if (isMute)
             {
-                bgmAudioSource.mute = true;
-                bgm_Slider.interactable = false;
-                bgm_FillArea.SetActive(false);
+                audioSources[i].mute = true;
+                sliders[i].interactable = false;
+                fillAreas[i].SetActive(false);
             
-                bgm_Button[0].gameObject.SetActive(true); // OFF
-                bgm_Button[1].gameObject.SetActive(false); // ON
+                buttons[i].transform.GetChild(0).gameObject.SetActive(true);
+                buttons[i].transform.GetChild(1).gameObject.SetActive(false);
             }
             else
             {
-                bgmAudioSource.mute = false;
-                bgm_Slider.interactable = true;
-                bgm_FillArea.SetActive(true);
+                audioSources[i].mute = false;
+                sliders[i].interactable = true;
+                fillAreas[i].SetActive(true);
             
-                bgm_Button[0].gameObject.SetActive(false); // OFF
-                bgm_Button[1].gameObject.SetActive(true); // ON
+                buttons[i].transform.GetChild(0).gameObject.SetActive(false);
+                buttons[i].transform.GetChild(1).gameObject.SetActive(true);
             }
         }
-
-        public void SfxMute(bool isMute)
-        {
-            if (isMute)
-            {
-                sfxAudioSource.mute = true;
-                sfx_Slider.interactable = false;
-                sfx_FillArea.SetActive(false);
-            
-                sfx_Button[0].gameObject.SetActive(true); // OFF
-                sfx_Button[1].gameObject.SetActive(false); // ON
-            }
-            else
-            {
-                sfxAudioSource.mute = false;
-                sfx_Slider.interactable = true;
-                sfx_FillArea.SetActive(true);
-            
-                sfx_Button[0].gameObject.SetActive(false); // OFF
-                sfx_Button[1].gameObject.SetActive(true); // ON
-            }
-        }
+        
         IEnumerator FadeBgmPlay(string clipName , AudioSource audioSource) // 배경음을 자연스럽게 바꾸는 함수
         {
             float currentVolume = audioSource.volume;

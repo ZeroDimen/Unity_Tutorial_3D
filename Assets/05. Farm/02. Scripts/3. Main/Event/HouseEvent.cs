@@ -25,7 +25,7 @@ namespace Farm
         {
             if (other.CompareTag("Player"))
             {
-                houseTop.SetActive(false);
+                houseTop.SetActive(true);
                 Farm_GameManager.Instance.uiManager.ActivateMiniMapUI(true);
                 
                 Farm_GameManager.Instance.SetCameraState(CameraState.Outside);

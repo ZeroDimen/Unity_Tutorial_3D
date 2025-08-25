@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using TMPro;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -17,6 +18,7 @@ namespace Farm
         public static event Action<WeatherType> weatherAction;
 
         [SerializeField] private GameObject[] weatherParticles;
+        [SerializeField] private TextMeshProUGUI WeatherUI;
 
         IEnumerator Start()
         {
@@ -34,6 +36,7 @@ namespace Farm
                 weatherParticles[ranIndex].SetActive(true);
                 
                 AudioManager.Instance.WeatherPlay($"{weatherType}");
+                WeatherUI.text = $"현제 날씨 : {weatherType}";
                 Debug.Log($"현제 날씨는 {weatherType} 입니다."); // 날씨가 바뀜에 따라 식물 성장 속도?
            
                 weatherAction?.Invoke(weatherType);
