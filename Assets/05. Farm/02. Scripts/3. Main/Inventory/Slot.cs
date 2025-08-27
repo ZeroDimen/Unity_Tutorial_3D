@@ -29,6 +29,7 @@ namespace Farm.Inventory
             
             this.crop = crop;
             slotImage.sprite = crop.icon;
+            AudioManager.Instance.SfxPlay("CropsGet");
         }
         
         private void UseCrop()
@@ -40,6 +41,8 @@ namespace Farm.Inventory
                 slotButton.interactable = false;
                 slotImage.gameObject.SetActive(false);
                 Farm_GameManager.Instance.itemManager.UseItem();
+                
+                AudioManager.Instance.SfxPlay("Eat");
             }
         }
     }

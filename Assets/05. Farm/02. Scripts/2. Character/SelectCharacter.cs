@@ -47,6 +47,7 @@ public class SelectCharacter : MonoBehaviour
             var targetRot = centerPivot.rotation * Quaternion.Euler(0, turnValue, 0);
 
             StartCoroutine(TurnRoutine(targetRot));
+            AudioManager.Instance.SfxPlay("Interact");
         }
     }
 
@@ -76,6 +77,7 @@ public class SelectCharacter : MonoBehaviour
         Debug.Log($"현재 선택한 캐릭터는 {currentIndex}번째 캐릭터입니다.");
         LoadSceneManager.Instance.SetCharacterIndex(currentIndex);
         
+        AudioManager.Instance.SfxPlay("Interact");
         StartCoroutine(SelectRoutine());
     }
     

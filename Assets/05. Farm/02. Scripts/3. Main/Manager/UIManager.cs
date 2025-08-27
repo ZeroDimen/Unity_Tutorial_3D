@@ -36,7 +36,7 @@ namespace Farm
         {
             if (Input.GetKeyDown(KeyCode.I))
             {
-                inventoryUI.gameObject.SetActive(!inventoryUI.activeSelf);
+                inventoryUI.SetActive(!inventoryUI.activeSelf);
             }
         }
 
@@ -65,5 +65,6 @@ namespace Farm
         {
             miniMapUI.SetActive(isActive);
         }
+        
     }
 }

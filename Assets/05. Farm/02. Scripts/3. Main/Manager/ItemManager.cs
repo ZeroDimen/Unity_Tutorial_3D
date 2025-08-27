@@ -12,14 +12,15 @@ namespace Farm
 
         [SerializeField] private int slotAmount = 21;
         private int itemCount = 0;
-
+        
+        
         private void Start()
         {
             for (int i = 0; i < slotAmount; i++)
             {
                 Instantiate(slotPrefab, slotGroup);
             }
-
+        
             slots = slotGroup.GetComponentsInChildren<Slot>();
         }
 

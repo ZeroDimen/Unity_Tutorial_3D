@@ -2966,15 +2966,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bgm_Clips:
   - {fileID: 8300000, guid: d08ebcf05a5e3d737a292577fc84fb87, type: 3}
+  - {fileID: 8300000, guid: 0f4752f639c25fa488d07fac6afa54d0, type: 3}
   - {fileID: 8300000, guid: 69d1e2bafee157a4aa641cb258261f77, type: 3}
   - {fileID: 8300000, guid: 880b723dae228334581993053aa8be6c, type: 3}
-  - {fileID: 8300000, guid: 0f4752f639c25fa488d07fac6afa54d0, type: 3}
   - {fileID: 8300000, guid: a9dffcfd40d62534dae65b291502bbdc, type: 3}
-  weatherClips: []
   sfx_Clips:
   - {fileID: 8300000, guid: fe2401ea36917864099e95fe80f0c295, type: 3}
   - {fileID: 8300000, guid: 3f079e4940b454c44b4b53157f116563, type: 3}
   - {fileID: 8300000, guid: 0b105178f3394e648976f11637977aa8, type: 3}
+  - {fileID: 8300000, guid: e6031d8b068ccea44976472c9d2e0be3, type: 3}
   audioSources:
   - {fileID: 1074410736}
   - {fileID: 1142878628}

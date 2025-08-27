@@ -125,7 +125,8 @@ namespace Farm
                         {
                             tileArray[tileX, tileY].SetActive(false);
                             tileArray[tileX, tileY] = null;
-
+                            
+                            AudioManager.Instance.SfxPlay("CropsPickup");
                             StartCoroutine(HavestRoutine(plant.plantIndex , tile.transform.position));
                         }
                     }

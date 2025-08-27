@@ -7,7 +7,6 @@ namespace Farm
     public class AudioManager : Singleton<AudioManager>
     {
         [SerializeField] AudioClip[] bgm_Clips;
-        [SerializeField] AudioClip[] weatherClips;
         [SerializeField] AudioClip[] sfx_Clips;
         
         [SerializeField] private AudioSource[] audioSources;
